@@ -18,6 +18,9 @@ jobs:
           - EditMode
           - PlayMode
     steps:
+      - name: Unity - Activate
+        uses: game-ci/unity-activate@v2.0.0
+
       - name: Checkout code
         uses: actions/checkout@v4
 
