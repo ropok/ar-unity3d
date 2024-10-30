@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Set up GameCI
-        uses: game-ci/unity-builder@v3
+        uses: game-ci/unity-builder@v2
         with:
           unityVersion: '2022.3.6f1'
           targetPlatform: Android
