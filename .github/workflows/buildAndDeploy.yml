@@ -48,6 +48,11 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
+      - name: Authenticate firebase
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CREDENTIALS }}
+        run: echo "${FIREBASE_TOKEN}" > firebase_credentials.json
+
       - name: Upload APK to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
