@@ -62,36 +62,47 @@ jobs:
           
   buildAndroid:
     # needs: testRunner
-    name: Build for Android 📱 with UnityCI
+    name: Build for Android 📱
     runs-on: ubuntu-latest
-    container:
-      image: unityci/editor:2022.3.6f1-android-3.1.0
-
+    strategy:
+      fail-fast: false
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Cache Library folder
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+
+      - name: Restore LFS cache
+        uses: actions/cache@v4
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
+
+      - name: Git LFS Pull
+        run: |
+          git lfs pull
+          git add .
+          git reset --hard
+
+      - name: Restore Library cache
         uses: actions/cache@v4
         with:
           path: Library
-          key: Library-${{ github.ref }}-${{ hashFiles('**/Packages/manifest.json') }}
+          key: Library-build-Android
           restore-keys: |
-            Library-${{ github.ref }}-
+            Library-build-
             Library-
 
-      - name: Set up GameCI
-        uses: game-ci/unity-builder@v2
+      - uses: game-ci/unity-builder@v2
         with:
-          unityVersion: '2022.3.6f1'
           targetPlatform: Android
-          androidAppBundle: false
 
-      - name: Upload Android build artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
           name: build-Android
-          path: build/Android/*.apk
+          path: build/Android
 
   deployToFirebase:
     runs-on: ubuntu-latest
