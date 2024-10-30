@@ -71,6 +71,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache Library folder
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ github.ref }}-${{ hashFiles('**/Packages/manifest.json') }}
+          restore-keys: |
+            Library-${{ github.ref }}-
+            Library-
+
       - name: Set up GameCI
         uses: game-ci/unity-builder@v2
         with:
