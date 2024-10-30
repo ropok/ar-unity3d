@@ -44,6 +44,8 @@ jobs:
         with:
           name: Build-Android
           path: build/Android
+
+      - name: checking directory
         run: ls -la
       
       - name: Install Firebase CLI
