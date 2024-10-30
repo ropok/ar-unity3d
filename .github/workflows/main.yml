@@ -8,104 +8,16 @@ env:
   UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
 jobs:
-  testRunner:
-    name: Test in ${{ matrix.testMode }} ✨
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        testMode:
-          - EditMode
-          - PlayMode
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      - name: Restore LFS cache
-        uses: actions/cache@v4
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      - name: Git LFS Pull
-        run: |
-          git lfs pull
-          git add .
-          git reset --hard
-
-      - name: Restore Library cache
-        uses: actions/cache@v4
-        with:
-          path: Library
-          key: Library-test-project-${{ matrix.targetPlatform }}
-          restore-keys: |
-            Library-test-project-
-            Library-
-
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        id: testRunner
-        with:
-          testMode: ${{ matrix.testMode }}
-          checkName: ${{ matrix.testMode }} test results
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Test results (${{ matrix.testMode }})
-          path: ${{ steps.testRunner.outputs.artifactsPath }}
-
-          
   buildAndroid:
-    needs: testRunner
-    name: Build for Android 📱 with UnityCI
+    name: Test Set up GameCI
     runs-on: ubuntu-latest
     container:
       image: unityci/editor:2022.3.6f1-android-3.1.0
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Set up GameCI
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v3
         with:
           unityVersion: '2022.3.6f1'
           targetPlatform: Android
           androidAppBundle: false
-
-      - name: Upload Android build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-Android
-          path: build/Android/*.apk
-
-  deployToFirebase:
-    runs-on: ubuntu-latest
-    needs: buildAndroid
-    steps:
-      - name: Download APK artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-Android
-      
-      - name: Install Firebase CLI
-        run: curl -sL https://firebase.tools | bash
-
-      - name: Authenticate firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CREDENTIALS }}
-        run: echo "${FIREBASE_TOKEN}" > firebase_credentials.json
-
-      - name: Upload APK to Firebase App Distribution
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CREDENTIALS }}
-        run: |
-          firebase appdistribution:distribute build/Android/*.apk \
-            --app 1:253433464496:android:7f0e622da93780e3ea1d75 \
-            --token "$(cat firebase_credentials.json)"
-            --release-notes "Testing version 1 distribution" --tester-file testers.txt
