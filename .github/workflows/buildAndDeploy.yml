@@ -63,4 +63,4 @@ jobs:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          file: build/Android/*.apk
+          file: build/Android/Android.apk
