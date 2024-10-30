@@ -48,16 +48,9 @@ jobs:
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
-      - name: Authenticate firebase
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CREDENTIALS }}
-        run: echo "${FIREBASE_TOKEN}" > firebase_credentials.json
-
       - name: Upload APK to Firebase App Distribution
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_CREDENTIALS }}
-        run: |
-          firebase appdistribution:distribute build/Android/*.apk \
-            --app 1:253433464496:android:7f0e622da93780e3ea1d75 \
-            --token "$(cat firebase_credentials.json)"
-            --release-notes "Testing version 1 distribution" --tester-file testers.txt
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{ secrets.FIREBASE_APP_ID }}
+          serviceCredentialsFile: ${{ secrets.FIREBASE_CREDENTIALS }}
+          file: build/Android/*.apk
