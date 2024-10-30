@@ -18,8 +18,6 @@ jobs:
           - EditMode
           - PlayMode
     steps:
-      - name: Unity - Activate
-        uses: game-ci/unity-activate@v2.0.0
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -70,6 +68,9 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Unity - Activate
+        uses: game-ci/unity-activate@v2.0.0
+      
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -98,7 +99,7 @@ jobs:
             Library-build-
             Library-
 
-      - uses: game-ci/unity-builder@v2
+      - uses: game-ci/unity-builder@v4
         with:
           targetPlatform: Android
 
