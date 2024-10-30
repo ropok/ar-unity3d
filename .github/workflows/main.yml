@@ -61,7 +61,7 @@ jobs:
 
           
   buildAndroid:
-    needs: testRunner
+    # needs: testRunner
     name: Build for Android 📱 with UnityCI
     runs-on: ubuntu-latest
     container:
@@ -72,7 +72,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up GameCI
-        uses: game-ci/unity-builder@v4
+        uses: game-ci/unity-builder@v2
         with:
           unityVersion: '2022.3.6f1'
           targetPlatform: Android
