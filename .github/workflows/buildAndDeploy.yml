@@ -45,9 +45,9 @@ jobs:
           name: Build-Android
           path: build/Android
 
-      - name: checking directory
-        run: ls -la
-      
+      - name: List downloaded files
+        run: ls -R build/Android
+
       - name: Install Firebase CLI
         run: curl -sL https://firebase.tools | bash
 
