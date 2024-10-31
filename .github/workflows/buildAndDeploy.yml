@@ -1,6 +1,6 @@
 name: Build project and Deploy Android
 
-on: push
+on: workflow_dispatch
 
 jobs:
   buildForAllSupportedPlatforms:
