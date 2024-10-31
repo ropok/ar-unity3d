@@ -1562,7 +1562,7 @@ MonoBehaviour:
   m_SerializedLibrary: {fileID: 11400000, guid: 332551e53c2b06b448938dffc2bc3a77,
     type: 2}
   m_MaxNumberOfMovingImages: 1
-  m_TrackedImagePrefab: {fileID: 6076593358243034986, guid: 71e97f35a7830664285a6f96987a467f,
+  m_TrackedImagePrefab: {fileID: 213682809167537716, guid: 13e56dd56a145f745bc3c0afd656da76,
     type: 3}
 --- !u!1 &922142036
 GameObject:
@@ -2212,6 +2212,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Aj@Slow Run
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b59aa23ec392cdd4a81f6019a07dfb23,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1082271958561512970, guid: b59aa23ec392cdd4a81f6019a07dfb23,
         type: 3}
       propertyPath: m_IsActive
@@ -2638,7 +2643,8 @@ PrefabInstance:
       value: 33.5188
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 825894089210680117, guid: b59aa23ec392cdd4a81f6019a07dfb23, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b59aa23ec392cdd4a81f6019a07dfb23,
